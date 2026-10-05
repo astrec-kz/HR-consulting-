@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ассессмент и коучинг — ASTREC</title>
+<meta name="description" content="Экспресс-диагностика лидера: профиль из шести компетенций, сильные стороны, зоны роста и рекомендуемый формат развития.">
+<meta property="og:title" content="Ассессмент и коучинг — ASTREC">
+<meta property="og:description" content="Экспресс-диагностика лидера: профиль из шести компетенций, сильные стороны, зоны роста и рекомендуемый формат развития.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: compact brand header → tab rail of four tools → each tool = inputs column + live result column, stacking on phones */
+:root{
+  --bg:#F2F4FA; --surface:#FFFFFF; --sunk:#E9EDF7; --ink:#131830; --muted:#596182; --line:#D9DFEE;
+  --accent:#2D4BFF; --accent-soft:#E3E8FF; --on-accent:#FFFFFF; --sun:#FFB21E; --sun-soft:#FFF1D2;
+  --ok:#14915F; --ok-soft:#DDF3E9; --warn:#B56E00; --warn-soft:#FDEFD6; --bad:#C92F45; --bad-soft:#FBE1E5;
+  --f-display:"Unbounded", "Golos Text", system-ui, sans-serif;
+  --f-body:"Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1020; --surface:#161A2E; --sunk:#1D2238; --ink:#ECEFFA; --muted:#9BA3C4; --line:#2A3152;
+  --accent:#7389FF; --accent-soft:#232C5C; --on-accent:#0D1020; --sun:#FFC54F; --sun-soft:#3A2F14;
+  --ok:#3DC98E; --ok-soft:#14352A; --warn:#F2AE45; --warn-soft:#3A2B12; --bad:#FF6B7F; --bad-soft:#3D1A22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1020; --surface:#161A2E; --sunk:#1D2238; --ink:#ECEFFA; --muted:#9BA3C4; --line:#2A3152;
+  --accent:#7389FF; --accent-soft:#232C5C; --on-accent:#0D1020; --sun:#FFC54F; --sun-soft:#3A2F14;
+  --ok:#3DC98E; --ok-soft:#14352A; --warn:#F2AE45; --warn-soft:#3A2B12; --bad:#FF6B7F; --bad-soft:#3D1A22; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:28px 64px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
+.brand{font-family:var(--f-display);font-weight:700;letter-spacing:.06em;font-size:14px;display:flex;align-items:center;gap:10px}
+.brand i{width:22px;height:22px;border-radius:6px;background:var(--accent);display:inline-block;position:relative}
+.brand i::after{content:"";position:absolute;right:-4px;bottom:-4px;width:10px;height:10px;border-radius:50%;background:var(--sun)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,4.4vw,44px);line-height:1.08;margin:14px 0 10px;text-wrap:balance;max-width:16ch}
+.lead{color:var(--muted);max-width:60ch;margin:0}
+.note{font-size:13px;color:var(--muted);max-width:34ch}
+nav.tabs{display:flex;gap:6px;margin:28px 0 22px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px var(--f-body);padding:10px 16px;border-radius:999px;cursor:pointer;display:flex;gap:8px;align-items:center}
+nav.tabs button span{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+nav.tabs button[aria-selected="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+nav.tabs button[aria-selected="true"] span{color:var(--on-accent);opacity:.8}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.tool-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;align-items:baseline;margin-bottom:16px}
+.tool-head h2{font-family:var(--f-display);font-weight:500;font-size:22px;margin:0;text-wrap:balance}
+.tool-head p{margin:0;color:var(--muted);max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:18px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+.card h3{font:600 13px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.stack{display:grid;gap:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+label.f{display:grid;gap:5px;font-size:13px;color:var(--muted)}
+input[type=text],input[type=number],select,textarea{width:100%;font:15px var(--f-body);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+textarea{min-height:150px;resize:vertical;font-size:14px}
+input[type=number]{font-family:var(--f-mono);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:6px 11px;font:13px var(--f-body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.toggle{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+.btn{border:0;border-radius:8px;padding:10px 14px;font:600 14px var(--f-body);cursor:pointer;background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
+.btn.sm{padding:6px 10px;font-size:13px}
+.tbl-wrap{overflow-x:auto;margin-inline:-4px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font:600 12px var(--f-body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+td input,td select{padding:6px 7px;font-size:14px;min-width:0}
+td.num,th.num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.info{background:var(--accent-soft);color:var(--accent)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--sunk);border-radius:10px;padding:12px}
+.tile b{display:block;font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums;margin-top:2px}
+.tile small{color:var(--muted);font-size:12px}
+.tile.hl{background:var(--sun-soft)}
+.timeline{display:flex;border-radius:8px;overflow:hidden;height:46px}
+.timeline div{display:flex;flex-direction:column;justify-content:center;padding:0 8px;font-size:12px;color:var(--on-accent);min-width:0;overflow:hidden;white-space:nowrap}
+.legend{display:grid;gap:4px;font-size:13px;margin-top:10px}
+.legend span{display:flex;gap:8px;align-items:center}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.bars{display:grid;gap:10px}
+.bar{display:grid;gap:4px}
+.bar .lbl{display:flex;justify-content:space-between;font-size:13px}
+.bar .lbl b{font-family:var(--f-mono);font-weight:500}
+.bar .trk{height:12px;border-radius:6px;background:var(--sunk);overflow:hidden}
+.bar .trk i{display:block;height:100%;border-radius:6px}
+.muted{color:var(--muted)} .small{font-size:13px}
+.disclaimer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:4px}
+.stmt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.stmt p{margin:0;font-size:14px}
+.seg{display:flex;gap:3px}
+.seg button{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);font:500 13px var(--f-mono);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.comp-title{font:600 12px var(--f-body);text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-top:10px}
+svg text{fill:var(--muted);font-family:var(--f-body)}
+.kp{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:14px}
+.kp-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;align-items:baseline}
+.kp-head h3{font-family:var(--f-display);font-weight:500;font-size:17px;margin:0}
+.kp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:700px){.kp-grid{grid-template-columns:1fr}}
+.kp-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toast{font-size:13px;color:var(--ok)}
+footer{margin-top:40px;color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+@media (prefers-reduced-motion:no-preference){.bar .trk i{transition:width .35s ease}}
+
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+nav.tabs a{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px var(--f-body);padding:10px 16px;border-radius:999px;display:flex;gap:8px;align-items:center;text-decoration:none}
+nav.tabs a span{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+nav.tabs a[aria-current="page"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+nav.tabs a[aria-current="page"] span{color:var(--on-accent);opacity:.8}
+nav.tabs a:focus-visible,a.btn:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.brand a{color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:28px}
+.svc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px;color:var(--ink);text-decoration:none;min-width:0}
+.svc:hover{border-color:var(--accent)}
+.svc .n{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.svc h2{font-family:var(--f-display);font-weight:500;font-size:19px;margin:0;text-wrap:balance}
+.svc p{margin:0;color:var(--muted);font-size:14px}
+.svc ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:3px}
+.svc .go{margin-top:auto;color:var(--accent);font-weight:600;font-size:14px}
+.contact{margin-top:28px;background:var(--sun-soft);border-radius:var(--r);padding:18px;display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:space-between}
+.contact b{font-family:var(--f-mono);font-weight:500;user-select:all}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="brand"><a href="/services/"><i aria-hidden="true"></i>ASTREC</a></div>
+      <h1>Оценка руководителей и коучинг по стандартам ICF</h1>
+      <p class="lead">Экспресс-диагностика лидера: профиль из шести компетенций, сильные стороны, зоны роста и рекомендуемый формат развития.</p>
+    </div>
+    <p class="note">Расчёты остаются в вашем браузере. ASTREC получает данные, только если вы отправите заявку. Значения в формах — пример.</p>
+  </header>
+
+  <nav class="tabs" aria-label="Направления ASTREC"><a href="/search/"><span>01</span>Executive search</a><a href="/exit/"><span>02</span>Высвобождение персонала</a><a href="/grade/"><span>03</span>Грейды и KPI</a><a href="/assess/" aria-current="page"><span>04</span>Ассессмент и коучинг</a></nav>
+
+  <!-- 01 SEARCH -->
+  <section role="tabpanel" id="p-search" aria-labelledby="t-search">
+    <div class="tool-head"><h2>Бриф на поиск и скоринг кандидатов</h2><p>Опишите позицию — получите план поиска по неделям. Оценивайте финалистов по одним критериям.</p></div>
+    <div class="grid">
+      <div class="card stack">
+        <h3>Профиль позиции</h3>
+        <label class="f">Должность<input type="text" id="s-title"></label>
+        <div class="row2">
+          <label class="f">Уровень<select id="s-level">
+            <option value="c">C-level (CEO, CFO, COO)</option>
+            <option value="director">Директор функции</option>
+            <option value="head">Руководитель направления</option>
+            <option value="expert">Редкий эксперт</option>
+          </select></label>
+          <label class="f">Отрасль<input type="text" id="s-industry"></label>
+        </div>
+        <div class="row2">
+          <label class="f">Доход от, ₸/мес gross<input type="number" id="s-from" step="100000" min="0"></label>
+          <label class="f">Доход до, ₸/мес gross<input type="number" id="s-to" step="100000" min="0"></label>
+        </div>
+        <div class="stack" style="gap:8px">
+          <label class="toggle"><input type="checkbox" id="s-conf">Конфиденциальный поиск (действующий сотрудник не знает)</label>
+          <label class="toggle"><input type="checkbox" id="s-reloc">Нужен переезд кандидата в другой город</label>
+        </div>
+        <div><div class="small muted" style="margin-bottom:6px">Ключевые компетенции — до 6</div><div class="chips" id="s-comps"></div></div>
+      </div>
+      <div class="stack">
+        <div class="card stack">
+          <h3>План поиска</h3>
+          <div class="tiles" id="s-tiles"></div>
+          <div class="timeline" id="s-timeline"></div>
+          <div class="legend" id="s-legend"></div>
+        </div>
+        <div class="card stack">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Скоринг финалистов</h3><button class="btn ghost sm" id="s-add">+ Кандидат</button></div>
+          <div class="tbl-wrap"><table id="s-table"></table></div>
+          <p class="small muted" style="margin:0">Оценка 1–5 по каждой компетенции. От 80% — рекомендуем, 65–79% — обсудить, ниже — не рекомендуем.</p>
+        </div>
+      </div>
+    </div>
+    <div data-kp="search"></div>
+  </section>
+
+  <!-- 02 EXIT -->
+  <section role="tabpanel" id="p-exit" aria-labelledby="t-exit" hidden>
+    <div class="tool-head"><h2>Калькулятор рисков высвобождения</h2><p>Внесите сотрудников, которых планируете высвободить. Увидите риск по каждому, минимальные выплаты и цену проигранного спора.</p></div>
+    <div class="card stack">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Сотрудники</h3><button class="btn ghost sm" id="e-add">+ Сотрудник</button></div>
+      <div class="tbl-wrap"><table id="e-table"></table></div>
+      <p class="small muted" style="margin:0">Защищённая категория: беременная, родитель ребёнка до 3 лет, одинокий родитель ребёнка до 14 лет или ребёнка с инвалидностью. Отсутствует: больничный или отпуск на дату увольнения.</p>
+    </div>
+    <div class="grid" style="margin-top:18px">
+      <div class="card stack">
+        <h3>Допущения для сценария спора</h3>
+        <label class="f">Срок вынужденного прогула при восстановлении, мес<input type="number" id="e-months" min="1" max="24"></label>
+        <label class="f">Судебные и юридические расходы на 1 спор, ₸<input type="number" id="e-legal" step="50000" min="0"></label>
+        <label class="f">Вероятность спора при высоком риске, %<input type="number" id="e-prob" min="0" max="100"></label>
+        <p class="disclaimer">Ориентир по Трудовому кодексу РК, не юридическое заключение. Основания, сроки и выплаты по каждому сотруднику проверяют юристы-партнёры ASTREC.</p>
+      </div>
+      <div class="card stack">
+        <h3>Итог по проекту</h3>
+        <div class="tiles" id="e-tiles"></div>
+        <div class="bars" id="e-bars"></div>
+        <div id="e-advice" class="small"></div>
+      </div>
+    </div>
+    <div data-kp="exit"></div>
+  </section>
+
+  <!-- 03 GRADE -->
+  <section role="tabpanel" id="p-grade" aria-labelledby="t-grade" hidden>
+    <div class="tool-head"><h2>Экспресс-грейдирование и карта KPI</h2><p>Оцените должности по шести факторам методики ASTREC Grade — получите грейд и вилку оклада. Ниже соберите KPI и посчитайте премию.</p></div>
+    <div class="card stack">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Должности</h3><button class="btn ghost sm" id="g-add">+ Должность</button></div>
+      <div class="tbl-wrap"><table id="g-table"></table></div>
+      <div class="row2" style="max-width:560px">
+        <label class="f">Середина вилки 10-го грейда, ₸/мес<input type="number" id="g-mid" step="50000" min="0"></label>
+        <label class="f">Шаг между грейдами, %<input type="number" id="g-step" min="1" max="40"></label>
+      </div>
+      <p class="small muted" style="margin:0">Факторы 1–5: влияние на бизнес, управление людьми, сложность решений, экспертиза, ответственность за бюджет, коммуникации. Вилка — ±20% от середины.</p>
+    </div>
+    <div class="grid" style="margin-top:18px">
+      <div class="card stack">
+        <h3>Карта KPI</h3>
+        <div class="row2">
+          <label class="f">Должность<select id="k-pos"></select></label>
+          <label class="f">Целевая премия, % годового оклада<input type="number" id="k-bonus" min="0" max="200"></label>
+        </div>
+        <div class="tbl-wrap"><table id="k-table"></table></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" id="k-add">+ KPI</button></div>
+        <p class="small muted" style="margin:0">Порог выплаты — 80% выполнения, потолок — 120%. Сумма весов должна быть 100%.</p>
+      </div>
+      <div class="card stack">
+        <h3>Результат</h3>
+        <div class="tiles" id="k-tiles"></div>
+        <div class="bars" id="k-bars"></div>
+      </div>
+    </div>
+    <div data-kp="grade"></div>
+  </section>
+
+  <!-- 04 ASSESS -->
+  <section role="tabpanel" id="p-assess" aria-labelledby="t-assess" hidden>
+    <div class="tool-head"><h2>Экспресс-диагностика лидера</h2><p>12 утверждений, 6 управленческих компетенций. Отметьте, насколько каждое верно для руководителя (1 — совсем нет, 5 — полностью).</p></div>
+    <div class="grid">
+      <div class="card">
+        <label class="f" style="margin-bottom:10px">Кого оцениваем<input type="text" id="a-who"></label>
+        <div id="a-list"></div>
+      </div>
+      <div class="card stack">
+        <h3>Профиль компетенций</h3>
+        <div id="a-radar" style="max-width:420px;margin:0 auto;width:100%"></div>
+        <div id="a-result" class="stack"></div>
+        <p class="disclaimer">Самооценка — скрининг, а не диагноз. Надёжный вывод даёт ассессмент-центр с кейсами, интервью по компетенциям и независимыми ассессорами.</p>
+      </div>
+    </div>
+    <div data-kp="assess"></div>
+  </section>
+
+  <footer><span>ASTREC — HR-консалтинг и executive search, Казахстан</span><span>WhatsApp: <b style="font-family:var(--f-mono);user-select:all">+7 778 675 12 98</b> · <b style="font-family:var(--f-mono);user-select:all">astrecoffice@gmail.com</b></span></footer>
+</div>
+
+<form name="kp-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="kp-request">
+  <input name="bot-field"><input name="tool"><input name="name"><input name="company"><input name="contact"><textarea name="message"></textarea>
+</form>
+<script>window.ASTREC_TOOL="assess";</script>
+<script>
+(function(){
+const $ = (s, r=document) => r.querySelector(s);
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const fmtM = n => (n>=1e6 ? (n/1e6).toLocaleString('ru-RU',{maximumFractionDigits:1})+' млн' : fmt(n)) + ' ₸';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+/* ---------- tabs ---------- */
+const FIXED = window.ASTREC_TOOL || null;
+const tabs = FIXED ? [] : [...document.querySelectorAll('nav.tabs button')];
+if(FIXED){ ['search','exit','grade','assess'].forEach(t=>{ $('#p-'+t).hidden = t!==FIXED; }); }
+function showTab(id){ if(FIXED) return;
+  tabs.forEach(b => { const on = b.dataset.tab===id; b.setAttribute('aria-selected', on); b.tabIndex = on?0:-1; $('#p-'+b.dataset.tab).hidden = !on; });
+  try{ localStorage.setItem('astrec-tab', id); }catch(e){}
+}
+tabs.forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+let start = (location.hash||'').slice(1);
+if(!['search','exit','grade','assess'].includes(start)){ try{ start = localStorage.getItem('astrec-tab')||'search'; }catch(e){ start='search'; } }
+showTab(['search','exit','grade','assess'].includes(start)?start:'search');
+
+/* ================= 01 SEARCH ================= */
+const COMPS = ['Стратегия','Финансовое моделирование','Управление командой','Работа с акционерами','Трансформация','Переговоры','Цифровизация','Отраслевая экспертиза','Английский C1','Антикризисное управление'];
+const LEVELS = {c:{w:12,long:40,name:'C-level'}, director:{w:10,long:30,name:'Директор функции'}, head:{w:8,long:25,name:'Руководитель направления'}, expert:{w:7,long:20,name:'Редкий эксперт'}};
+const S = {title:'Финансовый директор', level:'director', industry:'Горнодобывающая промышленность', from:2500000, to:3500000, conf:true, reloc:false,
+  comps:['Стратегия','Финансовое моделирование','Управление командой','Работа с акционерами'],
+  cands:[{name:'Кандидат A',sc:[5,4,4,5]},{name:'Кандидат B',sc:[4,5,3,3]},{name:'Кандидат C',sc:[3,4,5,4]}]};
+
+function searchBind(){
+  $('#s-title').value=S.title; $('#s-level').value=S.level; $('#s-industry').value=S.industry;
+  $('#s-from').value=S.from; $('#s-to').value=S.to; $('#s-conf').checked=S.conf; $('#s-reloc').checked=S.reloc;
+  $('#s-title').addEventListener('input',e=>{S.title=e.target.value;});
+  $('#s-industry').addEventListener('input',e=>{S.industry=e.target.value;});
+  $('#s-level').addEventListener('change',e=>{S.level=e.target.value;searchRender();});
+  $('#s-from').addEventListener('change',e=>{S.from=+e.target.value||0;searchRender();});
+  $('#s-to').addEventListener('change',e=>{S.to=+e.target.value||0;searchRender();});
+  $('#s-conf').addEventListener('change',e=>{S.conf=e.target.checked;searchRender();});
+  $('#s-reloc').addEventListener('change',e=>{S.reloc=e.target.checked;searchRender();});
+  $('#s-add').addEventListener('click',()=>{S.cands.push({name:'Кандидат '+String.fromCharCode(65+S.cands.length),sc:S.comps.map(()=>3)});searchRender();});
+}
+function searchPlan(){
+  const L = LEVELS[S.level];
+  let w = L.w + (S.conf?2:0) + (S.reloc?2:0) + Math.max(0,S.comps.length-4);
+  return {weeks:w, long:L.long, short:'3–5', stages:[['Исследование рынка',.25,'--accent'],['Контакт и интервью',.35,'--sun'],['Оценка и шорт-лист',.2,'--ok'],['Финал и оффер',.2,'--muted']]};
+}
+function scoreCand(c){ const n=S.comps.length; if(!n) return 0; return c.sc.slice(0,n).reduce((a,b)=>a+b,0)/(n*5)*100; }
+function verdict(p){ return p>=80?['Рекомендуем','ok']:p>=65?['Обсудить','warn']:['Не рекомендуем','bad']; }
+function searchRender(){
+  const chips=$('#s-comps'); chips.innerHTML='';
+  COMPS.forEach(c=>{ const b=document.createElement('button'); b.className='chip'; b.type='button'; b.textContent=c;
+    const on=S.comps.includes(c); b.setAttribute('aria-pressed',on);
+    b.addEventListener('click',()=>{ const i=S.comps.indexOf(c);
+      if(i>=0){ S.comps.splice(i,1); S.cands.forEach(k=>k.sc.splice(i,1)); }
+      else if(S.comps.length<6){ S.comps.push(c); S.cands.forEach(k=>k.sc.push(3)); }
+      searchRender(); });
+    chips.appendChild(b); });
+  const P=searchPlan();
+  $('#s-tiles').innerHTML = `<div class="tile hl"><small>Срок до оффера</small><b>${P.weeks} нед.</b></div><div class="tile"><small>Лонг-лист</small><b>${P.long}+</b></div><div class="tile"><small>Шорт-лист</small><b>${P.short}</b></div>`;
+  $('#s-timeline').innerHTML = P.stages.map(([n,f,c])=>`<div style="flex:${f};background:var(${c})" title="${n}"><b>${Math.max(1,Math.round(P.weeks*f))} нед.</b></div>`).join('');
+  $('#s-legend').innerHTML = P.stages.map(([n,f,c])=>`<span><i style="background:var(${c})"></i>${n} — ${Math.max(1,Math.round(P.weeks*f))} нед.</span>`).join('') +
+    (S.from&&S.to&&S.to<S.from?'<span class="pill bad" style="justify-self:start">Верхняя граница дохода меньше нижней</span>':'');
+  const t=$('#s-table');
+  const opts=v=>[1,2,3,4,5].map(n=>`<option${n===v?' selected':''}>${n}</option>`).join('');
+  t.innerHTML = `<thead><tr><th>Кандидат</th>${S.comps.map(c=>`<th class="num" title="${esc(c)}">${esc(c.length>12?c.slice(0,11)+'…':c)}</th>`).join('')}<th class="num">Итог</th><th></th></tr></thead><tbody>${
+    S.cands.map((k,i)=>{ const p=scoreCand(k), v=verdict(p);
+      return `<tr><td><input type="text" id="s-c${i}" data-i="${i}" class="s-name" value="${esc(k.name)}" style="min-width:110px"></td>${
+        S.comps.map((c,j)=>`<td class="num"><select id="s-c${i}-${j}" data-i="${i}" data-j="${j}" class="s-sc" aria-label="${esc(k.name)}: ${esc(c)}">${opts(k.sc[j])}</select></td>`).join('')
+      }<td class="num"><b>${Math.round(p)}%</b><br><span class="pill ${v[1]}">${v[0]}</span></td><td><button class="btn ghost sm s-del" data-i="${i}" aria-label="Удалить">×</button></td></tr>`; }).join('')}</tbody>`;
+  t.querySelectorAll('.s-name').forEach(el=>el.addEventListener('change',e=>{S.cands[+e.target.dataset.i].name=e.target.value;searchRender();}));
+  t.querySelectorAll('.s-sc').forEach(el=>el.addEventListener('change',e=>{S.cands[+e.target.dataset.i].sc[+e.target.dataset.j]=+e.target.value;searchRender();}));
+  t.querySelectorAll('.s-del').forEach(el=>el.addEventListener('click',e=>{S.cands.splice(+e.currentTarget.dataset.i,1);searchRender();}));
+}
+function searchSummary(){
+  const P=searchPlan();
+  return `Инструмент: Executive search\nПозиция: ${S.title} (${LEVELS[S.level].name}), отрасль: ${S.industry}\nДоход: ${fmt(S.from)}–${fmt(S.to)} ₸/мес gross\nКонфиденциально: ${S.conf?'да':'нет'}; переезд: ${S.reloc?'да':'нет'}\nКомпетенции: ${S.comps.join(', ')}\nОриентир срока: ${P.weeks} нед.`;
+}
+
+/* ================= 02 EXIT ================= */
+const E = {months:6, legal:500000, prob:60, rows:[
+  {name:'Менеджер по закупкам', sal:650000, ten:3, base:'red', prot:false, abs:false, uni:false, key:false},
+  {name:'Руководитель склада', sal:900000, ten:12, base:'red', prot:false, abs:false, uni:true, key:false},
+  {name:'Специалист по кадрам', sal:450000, ten:2, base:'red', prot:true, abs:false, uni:false, key:false},
+  {name:'Коммерческий директор', sal:2800000, ten:6, base:'agr', prot:false, abs:false, uni:false, key:true}]};
+function exitRisk(r){
+  const why=[]; let pts=0;
+  if(r.prot){ why.push(r.base==='red'?'увольнение по сокращению запрещено':'только добровольное соглашение'); pts+=r.base==='red'?10:2; }
+  if(r.abs){ why.push('нельзя уволить в период больничного или отпуска'); pts+=3; }
+  if(r.uni){ why.push('нужно мнение профсоюза'); pts+=1; }
+  if(r.ten>=10){ why.push('стаж 10+ лет'); pts+=1; }
+  if(r.key){ why.push('доступ к коммерческой тайне'); pts+=1; }
+  if(r.base==='agr') pts=Math.max(0,pts-1);
+  const level = pts>=10?'crit':pts>=3?'high':pts>=1?'mid':'low';
+  const min = r.base==='red' ? r.sal*1 : 0;
+  let pkg = r.base==='agr' ? 2 : 1.5;
+  if(r.ten>5) pkg+=1; if(r.ten>10) pkg+=1; if(level==='high') pkg+=1; if(level==='crit') pkg+=2; if(r.key) pkg+=1;
+  const exposure = r.sal*E.months + E.legal;
+  return {why, level, min, pkg, pkgSum:r.sal*pkg, exposure};
+}
+const LV={low:['Низкий','ok'],mid:['Средний','info'],high:['Высокий','warn'],crit:['Критический','bad']};
+function exitBind(){
+  $('#e-months').value=E.months; $('#e-legal').value=E.legal; $('#e-prob').value=E.prob;
+  $('#e-months').addEventListener('change',e=>{E.months=Math.max(1,+e.target.value||1);exitRender();});
+  $('#e-legal').addEventListener('change',e=>{E.legal=Math.max(0,+e.target.value||0);exitRender();});
+  $('#e-prob').addEventListener('change',e=>{E.prob=Math.min(100,Math.max(0,+e.target.value||0));exitRender();});
+  $('#e-add').addEventListener('click',()=>{E.rows.push({name:'Новый сотрудник',sal:500000,ten:1,base:'red',prot:false,abs:false,uni:false,key:false});exitRender();});
+}
+function exitRender(){
+  const t=$('#e-table');
+  const cb=(i,k,v,l)=>`<td style="text-align:center"><input type="checkbox" id="e-${k}${i}" class="e-cb" data-i="${i}" data-k="${k}" aria-label="${l}"${v?' checked':''} style="width:18px;height:18px;accent-color:var(--accent)"></td>`;
+  t.innerHTML=`<thead><tr><th>Должность / ФИО</th><th class="num">Оклад, ₸/мес</th><th class="num">Стаж, лет</th><th>Основание</th><th>Защищ.</th><th>Отсутств.</th><th>Профсоюз</th><th>Ком. тайна</th><th>Риск</th><th class="num">Мин. по закону</th><th class="num">Пакет соглашения</th><th></th></tr></thead><tbody>${
+    E.rows.map((r,i)=>{ const k=exitRisk(r), lv=LV[k.level];
+      return `<tr><td><input type="text" id="e-n${i}" class="e-in" data-i="${i}" data-k="name" value="${esc(r.name)}" style="min-width:150px"></td>
+      <td class="num"><input type="number" id="e-s${i}" class="e-in" data-i="${i}" data-k="sal" value="${r.sal}" step="50000" min="0" style="width:120px"></td>
+      <td class="num"><input type="number" id="e-t${i}" class="e-in" data-i="${i}" data-k="ten" value="${r.ten}" min="0" max="50" style="width:64px"></td>
+      <td><select id="e-b${i}" class="e-in" data-i="${i}" data-k="base" style="min-width:150px"><option value="red"${r.base==='red'?' selected':''}>Сокращение</option><option value="agr"${r.base==='agr'?' selected':''}>Соглашение сторон</option></select></td>
+      ${cb(i,'prot',r.prot,'Защищённая категория')}${cb(i,'abs',r.abs,'Отсутствует')}${cb(i,'uni',r.uni,'Член профсоюза')}${cb(i,'key',r.key,'Доступ к коммерческой тайне')}
+      <td><span class="pill ${lv[1]}" title="${esc(k.why.join('; ')||'особых ограничений нет')}">${lv[0]}</span></td>
+      <td class="num">${k.min?fmt(k.min):'—'}</td><td class="num">${fmt(k.pkgSum)}<br><span class="muted small">${k.pkg.toLocaleString('ru-RU')} оклада</span></td>
+      <td><button class="btn ghost sm e-del" data-i="${i}" aria-label="Удалить">×</button></td></tr>`; }).join('')}</tbody>`;
+  t.querySelectorAll('.e-in').forEach(el=>el.addEventListener('change',e=>{ const r=E.rows[+e.target.dataset.i], k=e.target.dataset.k;
+    r[k] = (k==='sal'||k==='ten') ? Math.max(0,+e.target.value||0) : e.target.value; exitRender(); }));
+  t.querySelectorAll('.e-cb').forEach(el=>el.addEventListener('change',e=>{ E.rows[+e.target.dataset.i][e.target.dataset.k]=e.target.checked; exitRender(); }));
+  t.querySelectorAll('.e-del').forEach(el=>el.addEventListener('click',e=>{ E.rows.splice(+e.currentTarget.dataset.i,1); exitRender(); }));
+
+  const ks=E.rows.map(exitRisk);
+  const sum=f=>ks.reduce((a,k)=>a+f(k),0);
+  const minT=sum(k=>k.min), pkgT=sum(k=>k.pkgSum);
+  const risky=ks.filter(k=>k.level==='high'||k.level==='crit').length;
+  const expT=sum(k=>k.exposure);
+  const expected=sum(k=>k.exposure*((k.level==='high'||k.level==='crit')?E.prob/100:k.level==='mid'?E.prob/300:E.prob/1000));
+  $('#e-tiles').innerHTML=`<div class="tile"><small>Сотрудников</small><b>${E.rows.length}</b></div><div class="tile"><small>Высокий и критический риск</small><b>${risky}</b></div><div class="tile"><small>Минимум по закону</small><b>${fmtM(minT)}</b></div><div class="tile hl"><small>Переговорные пакеты</small><b>${fmtM(pkgT)}</b></div>`;
+  const max=Math.max(pkgT,expected,expT,1);
+  const bar=(l,v,c)=>`<div class="bar"><div class="lbl"><span>${l}</span><b>${fmtM(v)}</b></div><div class="trk"><i style="width:${v/max*100}%;background:var(${c})"></i></div></div>`;
+  $('#e-bars').innerHTML = bar('Пакеты при соглашении сторон',pkgT,'--accent') + bar('Ожидаемый ущерб от споров (с учётом вероятности)',expected,'--warn') + bar('Худший сценарий: все оспорили и выиграли',expT,'--bad');
+  const crit=E.rows.filter((r,i)=>ks[i].level==='crit').map(r=>r.name);
+  $('#e-advice').innerHTML = (crit.length?`<p style="margin:0 0 6px"><span class="pill bad">Внимание</span> ${esc(crit.join(', '))}: по инициативе работодателя уволить нельзя. Возможен только добровольный уход по соглашению.</p>`:'') +
+    `<p class="muted" style="margin:0">Рекомендуемый пакет — оценка ASTREC: база 1,5–2 оклада плюс надбавки за стаж, риск и доступ к тайне. Итоговые суммы определяются на переговорах.</p>`;
+}
+function exitSummary(){
+  const ks=E.rows.map(exitRisk);
+  return `Инструмент: Управляемое высвобождение\nСотрудников: ${E.rows.length}, из них с высоким/критическим риском: ${ks.filter(k=>k.level==='high'||k.level==='crit').length}\n`+
+    E.rows.map((r,i)=>`— ${r.name}: ${r.base==='red'?'сокращение':'соглашение сторон'}, стаж ${r.ten} лет, риск: ${LV[ks[i].level][0].toLowerCase()}`).join('\n');
+}
+
+/* ================= 03 GRADE + KPI ================= */
+const FACT=[['Влияние',25],['Управление',20],['Решения',20],['Экспертиза',15],['Бюджет',12],['Коммуникации',8]];
+const G={mid:900000, step:12, pos:[
+  {name:'Генеральный директор',f:[5,5,5,5,5,5]},
+  {name:'Финансовый директор',f:[5,4,5,5,5,4]},
+  {name:'HR бизнес-партнёр',f:[3,2,4,4,2,4]},
+  {name:'Менеджер по продажам',f:[2,1,2,3,2,3]},
+  {name:'Бухгалтер',f:[1,1,2,3,1,2]}]};
+function gradeOf(f){ const pts=f.reduce((a,v,i)=>a+(v-1)/4*FACT[i][1],0); const g=Math.min(20,Math.max(1,1+Math.round(pts/100*19))); return {pts,g}; }
+function band(g){ return g>=18?'Топ-менеджмент':g>=15?'Директора':g>=11?'Руководители':g>=7?'Эксперты':'Специалисты'; }
+function midOf(g){ return G.mid*Math.pow(1+G.step/100,g-10); }
+const K={pos:1, bonus:30, rows:[
+  {name:'EBITDA, млн ₸',w:30,plan:12000,fact:12600,dir:'up'},
+  {name:'Оборачиваемость оборотного капитала, дней',w:20,plan:45,fact:50,dir:'down'},
+  {name:'Закрытие месячной отчётности, раб. дней',w:20,plan:10,fact:9,dir:'down'},
+  {name:'Точность бюджета, %',w:15,plan:95,fact:92,dir:'up'},
+  {name:'Развитие команды, оценка 1–5',w:15,plan:4,fact:4,dir:'up'}]};
+function kpiScore(r){ if(!r.plan||!r.fact) return 0; const ratio = r.dir==='up'? r.fact/r.plan : r.plan/r.fact; return ratio<0.8?0:Math.min(ratio,1.2); }
+function gradeBind(){
+  $('#g-mid').value=G.mid; $('#g-step').value=G.step; $('#k-bonus').value=K.bonus;
+  $('#g-mid').addEventListener('change',e=>{G.mid=Math.max(0,+e.target.value||0);gradeRender();});
+  $('#g-step').addEventListener('change',e=>{G.step=Math.min(40,Math.max(1,+e.target.value||1));gradeRender();});
+  $('#k-bonus').addEventListener('change',e=>{K.bonus=Math.max(0,+e.target.value||0);gradeRender();});
+  $('#k-pos').addEventListener('change',e=>{K.pos=+e.target.value;gradeRender();});
+  $('#g-add').addEventListener('click',()=>{G.pos.push({name:'Новая должность',f:[3,3,3,3,3,3]});gradeRender();});
+  $('#k-add').addEventListener('click',()=>{K.rows.push({name:'Новый KPI',w:0,plan:100,fact:100,dir:'up'});gradeRender();});
+}
+function gradeRender(){
+  const t=$('#g-table');
+  const opts=v=>[1,2,3,4,5].map(n=>`<option${n===v?' selected':''}>${n}</option>`).join('');
+  t.innerHTML=`<thead><tr><th>Должность</th>${FACT.map(f=>`<th class="num">${f[0]}<br><span style="font-weight:500">${f[1]}%</span></th>`).join('')}<th class="num">Баллы</th><th class="num">Грейд</th><th>Уровень</th><th class="num">Вилка оклада, ₸/мес</th><th></th></tr></thead><tbody>${
+    G.pos.map((p,i)=>{ const r=gradeOf(p.f), m=midOf(r.g);
+      return `<tr><td><input type="text" id="g-n${i}" class="g-name" data-i="${i}" value="${esc(p.name)}" style="min-width:160px"></td>${
+        p.f.map((v,j)=>`<td class="num"><select id="g-f${i}-${j}" class="g-f" data-i="${i}" data-j="${j}" aria-label="${esc(p.name)}: ${FACT[j][0]}">${opts(v)}</select></td>`).join('')
+      }<td class="num">${Math.round(r.pts)}</td><td class="num"><b style="font-size:17px">${r.g}</b></td><td><span class="pill info">${band(r.g)}</span></td><td class="num">${fmt(m*0.8)} – ${fmt(m*1.2)}</td>
+      <td><button class="btn ghost sm g-del" data-i="${i}" aria-label="Удалить">×</button></td></tr>`; }).join('')}</tbody>`;
+  t.querySelectorAll('.g-name').forEach(el=>el.addEventListener('change',e=>{G.pos[+e.target.dataset.i].name=e.target.value;gradeRender();}));
+  t.querySelectorAll('.g-f').forEach(el=>el.addEventListener('change',e=>{G.pos[+e.target.dataset.i].f[+e.target.dataset.j]=+e.target.value;gradeRender();}));
+  t.querySelectorAll('.g-del').forEach(el=>el.addEventListener('click',e=>{ if(G.pos.length<=1) return; G.pos.splice(+e.currentTarget.dataset.i,1); if(K.pos>=G.pos.length) K.pos=0; gradeRender(); }));
+
+  if(K.pos>=G.pos.length) K.pos=0;
+  $('#k-pos').innerHTML=G.pos.map((p,i)=>`<option value="${i}"${i===K.pos?' selected':''}>${esc(p.name)}</option>`).join('');
+  const kt=$('#k-table');
+  kt.innerHTML=`<thead><tr><th>Показатель</th><th class="num">Вес, %</th><th class="num">План</th><th class="num">Факт</th><th>Лучше</th><th class="num">Вып.</th><th></th></tr></thead><tbody>${
+    K.rows.map((r,i)=>{ const s=kpiScore(r);
+      return `<tr><td><input type="text" id="k-n${i}" class="k-in" data-i="${i}" data-k="name" value="${esc(r.name)}" style="min-width:170px"></td>
+      <td class="num"><input type="number" id="k-w${i}" class="k-in" data-i="${i}" data-k="w" value="${r.w}" min="0" max="100" style="width:64px"></td>
+      <td class="num"><input type="number" id="k-p${i}" class="k-in" data-i="${i}" data-k="plan" value="${r.plan}" style="width:90px"></td>
+      <td class="num"><input type="number" id="k-f${i}" class="k-in" data-i="${i}" data-k="fact" value="${r.fact}" style="width:90px"></td>
+      <td><select id="k-d${i}" class="k-in" data-i="${i}" data-k="dir"><option value="up"${r.dir==='up'?' selected':''}>больше</option><option value="down"${r.dir==='down'?' selected':''}>меньше</option></select></td>
+      <td class="num"><span class="pill ${s===0?'bad':s>=1?'ok':'warn'}">${Math.round(s*100)}%</span></td>
+      <td><button class="btn ghost sm k-del" data-i="${i}" aria-label="Удалить">×</button></td></tr>`; }).join('')}</tbody>`;
+  kt.querySelectorAll('.k-in').forEach(el=>el.addEventListener('change',e=>{ const r=K.rows[+e.target.dataset.i], k=e.target.dataset.k;
+    r[k] = (k==='name'||k==='dir') ? e.target.value : (+e.target.value||0); gradeRender(); }));
+  kt.querySelectorAll('.k-del').forEach(el=>el.addEventListener('click',e=>{ K.rows.splice(+e.currentTarget.dataset.i,1); gradeRender(); }));
+
+  const wsum=K.rows.reduce((a,r)=>a+r.w,0);
+  const perf=K.rows.reduce((a,r)=>a+kpiScore(r)*r.w,0)/(wsum||1);
+  const gr=gradeOf(G.pos[K.pos].f), base=midOf(gr.g);
+  const target=base*12*K.bonus/100, pay=target*perf;
+  $('#k-tiles').innerHTML=`<div class="tile"><small>Грейд / оклад (середина)</small><b>${gr.g} / ${fmtM(base)}</b></div><div class="tile"><small>Выполнение KPI</small><b>${Math.round(perf*100)}%</b></div><div class="tile"><small>Целевая премия за год</small><b>${fmtM(target)}</b></div><div class="tile hl"><small>Премия к выплате</small><b>${fmtM(pay)}</b></div>` +
+    (wsum!==100?`<div class="tile" style="background:var(--bad-soft)"><small>Сумма весов</small><b style="color:var(--bad)">${wsum}%</b></div>`:'');
+  const mx=1.2;
+  $('#k-bars').innerHTML = K.rows.map(r=>{ const s=kpiScore(r); return `<div class="bar"><div class="lbl"><span>${esc(r.name)} · ${r.w}%</span><b>${Math.round(s*100)}%</b></div><div class="trk"><i style="width:${s/mx*100}%;background:var(${s===0?'--bad':s>=1?'--ok':'--warn'})"></i></div></div>`; }).join('');
+}
+function gradeSummary(){
+  return `Инструмент: Грейды и KPI\nДолжностей в экспресс-оценке: ${G.pos.length}\n`+G.pos.map(p=>`— ${p.name}: грейд ${gradeOf(p.f).g}`).join('\n')+`\nKPI для: ${G.pos[K.pos].name}, показателей: ${K.rows.length}`;
+}
+
+/* ================= 04 ASSESS ================= */
+const AC=[
+  ['Стратегическое мышление',['Видит, как решения сегодня влияют на бизнес через 3–5 лет','Регулярно пересматривает приоритеты под изменения рынка']],
+  ['Управление результатом',['Ставит измеримые цели и доводит их до результата','Отслеживает выполнение без микроменеджмента']],
+  ['Лидерство команды',['Команда работает автономно в его отсутствие','Растит преемников и сильных руководителей']],
+  ['Влияние и коммуникация',['Убеждает акционеров и коллег без давления','Проводит трудные разговоры спокойно и по делу']],
+  ['Принятие решений',['Принимает решения при неполной информации','Признаёт ошибки и быстро корректирует курс']],
+  ['Адаптивность к изменениям',['Ведёт команду через изменения без потери темпа','Быстро осваивает новое: AI, цифровые инструменты']]];
+const A={who:'Директор по операциям', v:[4,3,4,4,3,2,4,3,3,4,3,2]};
+function assessBind(){
+  $('#a-who').value=A.who; $('#a-who').addEventListener('input',e=>{A.who=e.target.value;});
+  let html='', k=0;
+  AC.forEach(([c,st])=>{ html+=`<div class="comp-title">${c}</div>`;
+    st.forEach(s=>{ const idx=k++; html+=`<div class="stmt"><p>${s}</p><div class="seg" role="group" aria-label="${esc(s)}">${[1,2,3,4,5].map(n=>`<button type="button" data-k="${idx}" data-n="${n}">${n}</button>`).join('')}</div></div>`; }); });
+  $('#a-list').innerHTML=html;
+  $('#a-list').addEventListener('click',e=>{ const b=e.target.closest('button[data-k]'); if(!b) return; A.v[+b.dataset.k]=+b.dataset.n; assessRender(); });
+}
+function assessScores(){ return AC.map((c,i)=>(A.v[i*2]+A.v[i*2+1])/2); }
+function assessRender(){
+  document.querySelectorAll('#a-list button[data-k]').forEach(b=>b.setAttribute('aria-pressed', A.v[+b.dataset.k]===+b.dataset.n));
+  const sc=assessScores(), n=sc.length, W=420, H=360, cx=W/2, cy=H/2+4, R=118;
+  const pt=(i,v)=>{ const a=-Math.PI/2+i*2*Math.PI/n; return [cx+Math.cos(a)*R*v/5, cy+Math.sin(a)*R*v/5]; };
+  let g='';
+  [1,2,3,4,5].forEach(l=>{ g+=`<polygon points="${sc.map((_,i)=>pt(i,l).join(',')).join(' ')}" fill="none" stroke="var(--line)" stroke-width="1"/>`; });
+  sc.forEach((_,i)=>{ const [x,y]=pt(i,5); g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--line)"/>`; });
+  [1,3,5].forEach(l=>{ const [x,y]=pt(0,l); g+=`<text x="${x+5}" y="${y+4}" font-size="10">${l}</text>`; });
+  g+=`<polygon points="${sc.map((v,i)=>pt(i,v).join(',')).join(' ')}" fill="var(--accent)" fill-opacity=".18" stroke="var(--accent)" stroke-width="2"/>`;
+  sc.forEach((v,i)=>{ const [x,y]=pt(i,v); g+=`<circle cx="${x}" cy="${y}" r="4" fill="var(--accent)"/>`; });
+  AC.forEach(([c],i)=>{ const a=-Math.PI/2+i*2*Math.PI/n, x=cx+Math.cos(a)*(R+18), y=cy+Math.sin(a)*(R+18);
+    const anchor=Math.abs(Math.cos(a))<.2?'middle':Math.cos(a)>0?'start':'end';
+    const words=c.split(' '); const l1=words.slice(0,Math.ceil(words.length/2)).join(' '), l2=words.slice(Math.ceil(words.length/2)).join(' ');
+    const dy = Math.sin(a)<-.5?-14:Math.sin(a)>.5?8:-4;
+    g+=`<text x="${x}" y="${y+dy}" font-size="11.5" text-anchor="${anchor}">${l1}${l2?`<tspan x="${x}" dy="13">${l2}</tspan>`:''}</text>`; });
+  $('#a-radar').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Профиль компетенций">${g}</svg>`;
+  const avg=sc.reduce((a,b)=>a+b,0)/n;
+  const order=sc.map((v,i)=>[v,AC[i][0]]).sort((a,b)=>b[0]-a[0]);
+  const top=order.slice(0,2), low=order.slice(-2).reverse();
+  let rec, tag;
+  if(avg<3){ rec='Ассессмент-центр и индивидуальная программа развития: несколько компетенций ниже управленческой нормы.'; tag=['Нужна глубокая оценка','warn']; }
+  else if(avg<4){ rec=`Коучинг по стандартам ICF, 6 сессий с фокусом на «${low[0][1]}» и «${low[1][1]}».`; tag=['Точечное развитие','info']; }
+  else { rec='Executive-коучинг и включение в кадровый резерв на позицию следующего уровня.'; tag=['Сильный профиль','ok']; }
+  $('#a-result').innerHTML=`<div class="tiles"><div class="tile hl"><small>Средний балл</small><b>${avg.toFixed(1)} из 5</b></div><div class="tile"><small>Вывод</small><b style="font-size:15px;font-family:var(--f-body)"><span class="pill ${tag[1]}">${tag[0]}</span></b></div></div>
+    <div class="small"><b>Сильные стороны:</b> ${top.map(t=>`${t[1]} (${t[0].toFixed(1)})`).join(', ')}</div>
+    <div class="small"><b>Зоны роста:</b> ${low.map(t=>`${t[1]} (${t[0].toFixed(1)})`).join(', ')}</div>
+    <div class="small"><b>Рекомендуемый формат:</b> ${rec}</div>`;
+}
+function assessSummary(){
+  const sc=assessScores();
+  return `Инструмент: Ассессмент и коучинг\nОцениваемый: ${A.who}\n`+AC.map((c,i)=>`— ${c[0]}: ${sc[i].toFixed(1)}`).join('\n');
+}
+
+/* ================= KP request ================= */
+const SUM={search:searchSummary, exit:exitSummary, grade:gradeSummary, assess:assessSummary};
+document.querySelectorAll('[data-kp]').forEach(host=>{
+  const id=host.dataset.kp;
+  host.innerHTML=`<div class="kp"><div class="kp-head"><h3>Запросить коммерческое предложение</h3><span class="small muted">Стоимость и сроки — в КП после короткого звонка</span></div>
+    <div class="kp-grid"><label class="f">Ваше имя<input type="text" id="kp-${id}-name" autocomplete="name"></label>
+    <label class="f">Компания<input type="text" id="kp-${id}-co" autocomplete="organization"></label>
+    <label class="f">Телефон или Telegram<input type="text" id="kp-${id}-ph" autocomplete="tel"></label></div>
+    <div class="kp-actions"><button class="btn" id="kp-${id}-go" type="button">Отправить заявку</button><span class="toast" id="kp-${id}-t" role="status"></span></div>
+    <div id="kp-${id}-out" hidden class="stack" style="gap:8px"><textarea id="kp-${id}-txt" readonly aria-label="Текст заявки"></textarea>
+    <div class="kp-actions"><a class="btn" id="kp-${id}-wa" href="https://wa.me/77786751298" target="_blank" rel="noopener" style="text-decoration:none">Отправить в WhatsApp</a><button class="btn ghost" id="kp-${id}-copy" type="button">Скопировать заявку</button></div>
+    <div class="small muted">Если WhatsApp не открылся, скопируйте заявку и отправьте на номер <b style="font-family:var(--f-mono);color:var(--ink);user-select:all">+7 778 675 12 98</b></div></div></div>`;
+  $(`#kp-${id}-go`).addEventListener('click',()=>{
+    const name=$(`#kp-${id}-name`).value.trim(), co=$(`#kp-${id}-co`).value.trim(), ph=$(`#kp-${id}-ph`).value.trim();
+    const t=$(`#kp-${id}-t`);
+    if(!name||!ph){ t.style.color='var(--bad)'; t.textContent='Укажите имя и контакт, чтобы мы могли ответить.'; return; }
+    const text=`Заявка на коммерческое предложение ASTREC\nИмя: ${name}\nКомпания: ${co||'—'}\nКонтакт: ${ph}\n\n${SUM[id]()}`;
+    $(`#kp-${id}-txt`).value=text;
+    $(`#kp-${id}-wa`).href='https://wa.me/77786751298?text='+encodeURIComponent(text);
+    const showFallback=()=>{ t.style.color='var(--ok)'; t.textContent='Заявка готова — отправьте её в WhatsApp.'; $(`#kp-${id}-out`).hidden=false; };
+    if(!FIXED){ showFallback(); return; }
+    const btn=$(`#kp-${id}-go`); btn.disabled=true; t.style.color='var(--muted)'; t.textContent='Отправляем…';
+    const body=new URLSearchParams({'form-name':'kp-request','bot-field':'',tool:id,name:name,company:co,contact:ph,message:text});
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()})
+      .then(r=>{ if(!r.ok) throw new Error(r.status); t.style.color='var(--ok)'; t.textContent='Заявка отправлена. Мы свяжемся с вами в течение рабочего дня.'; btn.textContent='Отправлено'; })
+      .catch(()=>{ btn.disabled=false; showFallback(); t.textContent='Не удалось отправить автоматически — отправьте заявку в WhatsApp.'; });
+  });
+  $(`#kp-${id}-copy`).addEventListener('click',()=>{
+    const ta=$(`#kp-${id}-txt`), t=$(`#kp-${id}-t`);
+    const ok=()=>{t.style.color='var(--ok)';t.textContent='Скопировано.';};
+    const fb=()=>{ta.focus();ta.select();t.style.color='var(--muted)';t.textContent='Текст выделен — скопируйте вручную.';};
+    try{ navigator.clipboard.writeText(ta.value).then(ok,fb); }catch(e){ fb(); }
+  });
+});
+
+searchBind(); searchRender(); exitBind(); exitRender(); gradeBind(); gradeRender(); assessBind(); assessRender();
+})();
+</script>
+
+</body>
+</html>
